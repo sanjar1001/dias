@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифрование и расшифрование данных</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+        <div class="container">
+        <label for="text">Введите текст:</label>
+        <textarea id="text" rows="4" cols="50"></textarea><br>
+
+        <button onclick="encrypt()">Зашифровать</button>
+        <button onclick="decrypt()">Расшифровать</button>
+
+        <h2>Результат:</h2>
+        <input type="text" id="result" readonly>
+        <button id="copyBtn" onclick="copyResult()">Копировать</button>
+
+        <script>
+            var alphabet = {
+                'А': '@', 'Б': '#', 'В': '$', 'Г': '%', 'Д': '^', 'Е': '&', 'Ё': '*', 'Ж': '(',
+                'З': ')', 'И': '!', 'Й': '?', 'К': '+', 'Л': '=', 'М': '[', 'Н': ']', 'О': '{',
+                'П': '}', 'Р': '|', 'С': ';', 'Т': ':', 'У': ',', 'Ф': '.', 'Х': '<', 'Ц': '>',
+                'Ч': '/', 'Ш': '_', 'Щ': '`', 'Ъ': '~', 'Ы': '€', 'Ь': '£', 'Э': '¥', 'Ю': '¤',
+                'Я': '§', ' ': '°'  // пример знаков, замените на нужные
+            };
+        
+            function encrypt() {
+                var inputText = document.getElementById("text").value.toUpperCase();
+                var encryptedText = "";
+        
+                for (var i = 0; i < inputText.length; i++) {
+                    var char = inputText.charAt(i);
+                    if (alphabet[char] !== undefined) {
+                        encryptedText += alphabet[char] + " ";
+                    } else {
+                        encryptedText += char;
+                    }
+                }
+        
+                document.getElementById("result").value = encryptedText.trim();
+            }
+        
+            function decrypt() {
+                var inputText = document.getElementById("text").value.split(" ");
+                var decryptedText = "";
+        
+                for (var i = 0; i < inputText.length; i++) {
+                    var code = inputText[i];
+                    var char = findCharByCode(code);
+                    decryptedText += char !== undefined ? char : code;
+                }
+        
+                document.getElementById("result").value = decryptedText.trim();
+            }
+        
+            function findCharByCode(code) {
+                for (var key in alphabet) {
+                    if (alphabet[key] === code) {
+                        return key;
+                    }
+                }
+                return undefined;
+            }
+
+            function copyResult() {
+                var resultInput = document.getElementById("result");
+                resultInput.select();
+                document.execCommand("copy");
+            }
+        </script>
+    </div>
+</body>
+</html>
